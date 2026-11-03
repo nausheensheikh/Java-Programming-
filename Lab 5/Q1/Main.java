@@ -1,108 +1,52 @@
-//Q2.	Create an abstract class Accounts with the following details: 
-//Data Members: 
-//(a) Balance (b) accountNumber (c) accountHoldersName (d) address 
+//Q1. Write a program to implement the Multiple Inheritance kind of framework (Bank Interface, Customer & Account classes).
 
-//Methods: 
-//(a) withdrawl()- abstract 
-//(b) deposit()- abstract 
-//(c) display() to show the balance of the account number 
+interface Bank {
+    void displayBankDetails();
+}
 
-//Create a subclass of this class SavingsAccount and add the following details: 
-//Data Members: 
-//(a) rateOfInterest 
+class Customer implements Bank {
+    private String customerName;
+    private String customerId;
 
-//Methods: 
-//(a)	calculateAmount() 
-//Write the Java program to implement this classes
-
-abstract class Accounts {
-
-    protected double balance;
-    protected String accountNumber;
-    protected String accountHoldersName;
-    protected String address;
-
-
-    public Accounts(double balance, String accountNumber, String accountHoldersName, String address) {
-        this.balance = balance;
-        this.accountNumber = accountNumber;
-        this.accountHoldersName = accountHoldersName;
-        this.address = address;
+    public Customer(String customerName, String customerId) {
+        this.customerName = customerName;
+        this.customerId = customerId;
     }
 
-
-    public abstract void withdrawl(double amount);
-    public abstract void deposit(double amount);
-
-
-    public void display() {
-        System.out.println("Account Number: " + accountNumber);
-        System.out.println("Account Holder's Name: " + accountHoldersName);
-        System.out.println("Address: " + address);
-        System.out.println("Current Balance: $" + String.format("%.2f", balance));
-        System.out.println("\n");
+    @Override
+    public void displayBankDetails() {
+        System.out.println("Bank: ICICI Bank Ltd.");
+        System.out.println("Customer ID: " + customerId);
+        System.out.println("Customer Name: " + customerName);
     }
 }
 
+class Account implements Bank {
+    private long accountNumber;
+    private double balance;
 
-class SavingsAccount extends Accounts {
-    private double rateOfInterest;
-
-
-    public SavingsAccount(double balance, String accountNumber, String accountHoldersName, String address, double rateOfInterest) {
-        super(balance, accountNumber, accountHoldersName, address);
-        this.rateOfInterest = rateOfInterest;
+    public Account(long accountNumber, double balance) {
+        this.accountNumber = accountNumber;
+        this.balance = balance;
     }
 
     @Override
-    public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-            System.out.println("Successfully deposited: $" + String.format("%.2f", amount));
-        } else {
-            System.out.println("Invalid deposit amount.");
-        }
-    }
-
-    @Override
-    public void withdrawl(double amount) {
-        if (amount > 0 && amount <= balance) {
-            balance -= amount;
-            System.out.println("Successfully withdrawn: $" + String.format("%.2f", amount));
-        } else if (amount > balance) {
-            System.out.println("Withdrawal failed: Insufficient balance.");
-        } else {
-            System.out.println("Invalid withdrawal amount.");
-        }
-    }
-
-    public double calculateAmount() {
-        double interest = (balance * rateOfInterest) / 100.0;
-        double totalAmount = balance + interest;
-        System.out.println("Annual Interest (@ " + rateOfInterest + "%): $" + String.format("%.2f", interest));
-        System.out.println("Total Amount after 1 Year: $" + String.format("%.2f", totalAmount));
-        return totalAmount;
+    public void displayBankDetails() {
+        System.out.println("Bank: ICICI Bank Ltd.");
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Balance: Rs " + balance);
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        SavingsAccount myAccount = new SavingsAccount(
-            5000.00,
-            "SA-654321",
-            "Aaron Brooks",
-            "123 Elm Street, Springfield",
-            4.5
-        );
+        Bank customer = new Customer("Bhavya Patel", "100025");
+        Bank account = new Account(70512100007L, 85000.0);
 
-        myAccount.display();
+        System.out.println("Customer Information: \n");
+        customer.displayBankDetails();
 
-        myAccount.deposit(1500.00);
-
-        myAccount.withdrawl(2000.00);
-
-        myAccount.display();
-
-        myAccount.calculateAmount();
+        System.out.println("\nAccount Information: \n");
+        account.displayBankDetails();
     }
 }
